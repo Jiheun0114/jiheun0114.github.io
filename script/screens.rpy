@@ -1411,7 +1411,7 @@ screen inven_open:
 
 
 screen inventory:
-    
+
     frame:
         align (0.1, 0.5)
         xsize 500
@@ -1490,18 +1490,17 @@ screen inventory:
             action Jump("quest")
 
 
-
 screen craftsuccess:
     timer 1.0 action Hide("craftsuccess")
     frame:
-        align (0.67, 0.3)
+        align (0.67, 0.15)
         xsize 300
         ysize 100
 
         text what:
             xalign 0.5
             yalign 0.5
-
+            
 
 ## 퀘스트 스크린 #####################################################################
 ##
@@ -1542,3 +1541,80 @@ screen quest:
             xalign 0.5
             yalign 0.5
             action Jump("craft")
+
+
+screen insert:
+
+    frame:
+        align (0.1, 0.5)
+        xsize 500
+        ysize 500
+
+        vbox:
+            vbox:
+                text "보유 아이템 종류: %s" %(len(inven))
+                text '인벤토리 총량: [inven.global_count]'
+            
+            viewport:
+                draggable True
+                mousewheel True
+                xfill True
+                yfill True
+
+                scrollbars "vertical"
+
+                vbox:
+                    for stack in inven:
+                        hbox:
+                            if stack.count != 0:
+                                textbutton "[stack.item.name]":
+                                    xysize (300, 50)
+                                    action Return(stack.item.id)
+                                text "x[stack.count]"
+
+    frame:
+        align (0.65, 0.5)
+        xsize 100
+        ysize 100
+        
+        if add_insert == "":
+            $ name = ""
+        else:
+            $ name = add_insert.name
+
+        textbutton "[name]":
+            xalign 0.5
+            yalign 0.5
+            action Return("Add")
+    
+    frame:
+        align (0.65, 0.7)
+        xsize 100
+        ysize 100
+        
+        textbutton "◆":
+            xalign 0.5
+            yalign 0.5
+            action Return("Check")
+
+    frame:
+        align (0.65, 0.3)
+        xsize 100
+        ysize 100
+
+        textbutton "종료":
+            xalign 0.5
+            yalign 0.5
+            action Jump("quest")
+
+
+screen insertsuccess:
+    timer 1.0 action Hide("insertsuccess")
+    frame:
+        align (0.67, 0.15)
+        xsize 300
+        ysize 100
+
+        text insert_what:
+            xalign 0.5
+            yalign 0.5

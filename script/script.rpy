@@ -14,6 +14,7 @@
 label start:
 
     $ inven = Inventory()
+    $ quest_dict = {}
     $ Quest.add('quest001', '첫 번째 퀘스트')
 
     jump quest
@@ -31,13 +32,11 @@ return
 
 label craft:
 
-    show screen inventory
-
-    $ end = False
+    $ craft_end = False
 
     call screen inventory
 
-    while end == False:
+    while craft_end == False:
 
         if _return == "Add1":
             if slot_count == 1:
@@ -78,6 +77,36 @@ label craft:
 return
 
 
+label insert:
+
+    $ insert_end = False
+
+    call screen insert
+
+    while insert_end == False:
+
+        if _return == "Add":
+            $ inven.add(add_insert, 1)
+            $ add_insert = ""
+        elif _return == "Check":
+            $ Insert.check(check, next)
+            show screen insertsuccess
+        # 아이템 목록
+        elif _return == "Plant":
+            $ Insert.slot(PLANT)
+        elif _return == "Flower":
+            $ Insert.slot(FLOWER)
+        elif _return == "Ribbon":
+            $ Insert.slot(RIBBON)
+        elif _return == "Bug":
+            $ Insert.slot(BUG)
+
+        call screen insert
+
+
+return
+
+
 label quest001:
 
     "퀘스트 001입니다."
@@ -100,7 +129,7 @@ return
 
 label quest002:
 
-    "벌레를 하나 만들어 투입해 봅시다.\n퀘스트 목록으로 나가서 제작 버튼을 누르면 됩니다."
+    "벌레를 하나 만들어 투입해 봅시다.\n퀘스트 목록으로 나가서 제작 버튼을 누르면 됩니다.\n꽃이랑 리본을 조합하면 벌레가 됩니다."
 
     "퀘스트 002는 끝났습니다."
     $ Quest.remove('quest002')
@@ -115,6 +144,17 @@ return
 
 label quest003:
 
-    "쉽지 않네… 아이템 집어넣을 슬롯을 따로 만들어야 하나 제작탭에 포함해야 하나."
+    "슬롯에 벌레를 넣으십시오."
+
+    $ check = BUG
+    $ next = 'quest003_1'
+    jump insert
+
+return
+
+
+label quest003_1:
+
+    "이게 되네…. 잘 넣으셨습니다."
 
 return

@@ -5,7 +5,9 @@ init python:
     ## 인벤토리
     registered_items = {}
     item_list = []
+    quest_dict = {}
     add1, add2, slot_count, what, output = "", "", 0, "", ""
+    add_insert, insert_what = "", ""
 
     def find_item(id):
         return registered_items[id]
@@ -151,8 +153,6 @@ init python:
             return
 
     ## 퀘스트
-    quest_dict = {}
-
     class Quest:
         def __init__(self, id, name):
             self.id = id
@@ -163,6 +163,39 @@ init python:
 
         def remove(id):
             del quest_dict[id]
+
+    ## 아이템 투입
+    class Insert:
+        def __init__(self):
+            self.item = item
+            self.result = result
+        
+        def slot(input):
+            global add_insert
+
+            if add_insert == "":
+                inven.remove(input, 1)
+                add_insert = inven.fetch_stack(input).item
+            else:
+                pass
+            return
+
+        def check(result, success):
+            global add_insert
+            global insert_what
+
+            if add_insert == result:
+                insert_what = "투입 성공"
+                add_insert = ""
+                renpy.jump(success)
+            elif add_insert == "":
+                insert_what = "투입 없음"
+            else:
+                inven.add(add_insert, 1)
+                insert_what = "투입 실패"
+                add_insert = ""
+            
+
 
             
 
